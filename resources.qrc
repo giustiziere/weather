@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/qresource">
+        <file>cold.png</file>
+        <file>config.ini</file>
+        <file>defaultconfig.ini</file>
+        <file>warm.png</file>
+    </qresource>
+</RCC>
