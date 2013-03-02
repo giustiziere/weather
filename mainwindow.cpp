@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+п»ї#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -116,7 +116,7 @@ void MainWindow::weatherRequestFinished(QNetworkReply *reply)
     xmlQuery.evaluateTo(&errorCity);
     qDebug() << errorCity;
     if (errorCity.left(errorCity.length() - 1) != "") {
-        QMessageBox::warning(0, "Ошибка!", "Невозможно получить данные о городе!\nПроверьте правильность ввода названия.\nErrorLog: " + errorCity);
+        QMessageBox::warning(0, "РћС€РёР±РєР°!", "РќРµРІРѕР·РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ Рѕ РіРѕСЂРѕРґРµ!\nРџСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРѕРґР° РЅР°Р·РІР°РЅРёСЏ.\nErrorLog: " + errorCity);
         this->show();
         ui->lineEditCity->clear();
         return;
@@ -159,7 +159,7 @@ void MainWindow::weatherRequestFinished(QNetworkReply *reply)
 
 void MainWindow::showPopupWeather()
 {
-    trayIcon->showMessage("Погода в " + city, "Сейчас " + temperature + " C\n" + "Скорость ветра " + wind + " км/ч\n" + "Направление ветра " + windDirection + "\n" + "Влажность " + humidity + "\%", QSystemTrayIcon::Information, 10000);
+    trayIcon->showMessage("РџРѕРіРѕРґР° РІ " + city, "РЎРµР№С‡Р°СЃ " + temperature + " C\n" + "РЎРєРѕСЂРѕСЃС‚СЊ РІРµС‚СЂР° " + wind + " РєРј/С‡\n" + "РќР°РїСЂР°РІР»РµРЅРёРµ РІРµС‚СЂР° " + windDirection + "\n" + "Р’Р»Р°Р¶РЅРѕСЃС‚СЊ " + humidity + "\%", QSystemTrayIcon::Information, 10000);
 }
 
 void MainWindow::on_exitSettingsButton_clicked()
@@ -170,7 +170,7 @@ void MainWindow::on_exitSettingsButton_clicked()
 void MainWindow::on_saveSettingsButton_clicked()
 {
     if (ui->lineEditCity->text() == "" || ui->lineEditUpdatePeriod->text() == "") {
-        QMessageBox::warning(0, "Ошибка!", "Не заполнено название города или значение периода обновления!");
+        QMessageBox::warning(0, "РћС€РёР±РєР°!", "РќРµ Р·Р°РїРѕР»РЅРµРЅРѕ РЅР°Р·РІР°РЅРёРµ РіРѕСЂРѕРґР° РёР»Рё Р·РЅР°С‡РµРЅРёРµ РїРµСЂРёРѕРґР° РѕР±РЅРѕРІР»РµРЅРёСЏ!");
         return;
     } else {
         QSettings settings(QCoreApplication::applicationDirPath() + "/config.ini", QSettings::IniFormat);
