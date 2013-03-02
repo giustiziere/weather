@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>390</width>
-    <height>270</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>390</width>
-    <height>270</height>
+    <height>370</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>390</width>
-    <height>270</height>
+    <height>370</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -35,8 +35,8 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>220</y>
+      <x>10</x>
+      <y>310</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -77,10 +77,28 @@
       <x>9</x>
       <y>9</y>
       <width>378</width>
-      <height>201</height>
+      <height>291</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="checkProxy">
+       <property name="text">
+        <string>Настройки подключения через прокси</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>*для применения настройки необходимо
+перезапустить программу</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="lineEditCity">
        <property name="alignment">
@@ -111,7 +129,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="8" column="1">
       <widget class="QCheckBox" name="checkShowPopupAtUpdate">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -121,19 +139,6 @@
 обновлении данных</string>
        </property>
       </widget>
-     </item>
-     <item row="3" column="1">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="clearTimeoutButton">
@@ -161,11 +166,72 @@
        </property>
       </widget>
      </item>
+     <item row="9" column="1">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="lineEditProxyLogin"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="lineEditProxyPort"/>
+     </item>
      <item row="4" column="1">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLineEdit" name="lineEditProxyServer">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="lineEditProxyPassword"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>*для применения настройки необходимо
-перезапустить программу</string>
+        <string>Адрес сервера</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Порт</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Логин (если нужно)</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Пароль (если нужно)</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>

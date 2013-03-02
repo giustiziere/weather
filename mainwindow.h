@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QMessageBox>
+#include <QNetworkProxy>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -28,19 +29,30 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     QSystemTrayIcon *trayIcon;
+
     QMenu *trayMenu;
     void createActions();
     QAction *settingsAction;
     QAction *aboutAction;
     QAction *exitAction;
+
     void getWeatherInfo();
+
+    QNetworkProxy proxy;
+
     QString xmlCode;
     QString temperature;
     QString wind;
     QString windDirection;
     QString humidity;
+
     QString city;
     int timeoutUpdate;
+    QString proxyHost;
+    int proxyPort;
+    QString proxyLogin;
+    QString proxyPassword;
+
     void showPopupWeather();
     void openSavedSettings();
     ~MainWindow();
@@ -54,11 +66,10 @@ public slots:
     void weatherRequestFinished(QNetworkReply*);
 
 private slots:
+    //void enableProxyAtCheck(int checkProxyBox);
     void on_exitSettingsButton_clicked();
     void on_saveSettingsButton_clicked();
-
     void on_clearCityButton_clicked();
-
     void on_clearTimeoutButton_clicked();
 
 private:

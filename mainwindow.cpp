@@ -26,10 +26,11 @@ MainWindow::MainWindow(QWidget *parent) :
     trayMenu->addAction(exitAction);
     trayIcon->setContextMenu(trayMenu);
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateWeather()));
     timer->start(timeoutUpdate * 1000);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -181,6 +182,15 @@ void MainWindow::on_saveSettingsButton_clicked()
         } else {
             settings.setValue("checkbaloon", "0");
         }
+        if (ui->checkProxy->isChecked()) {
+            settings.setValue("checkproxy", "1");
+        } else {
+            settings.setValue("checkproxy", "0");
+        }
+        settings.setValue("proxyhost", ui->lineEditProxyServer->text());
+        settings.setValue("proxyport", ui->lineEditProxyPort->text());
+        settings.setValue("proxylogin", ui->lineEditProxyLogin->text());
+        settings.setValue("proxypassword", ui->lineEditProxyPassword->text());
         openSavedSettings();
         getWeatherInfo();
     }
@@ -200,7 +210,39 @@ void MainWindow::openSavedSettings()
     } else {
         ui->checkShowPopupAtUpdate->setChecked(true);
     }
+    int checkproxy = settings.value("checkproxy").toInt();
+    if (checkproxy == 0) {
+        ui->checkProxy->setChecked(false);
+    } else {
+        ui->checkProxy->setChecked(true);
+    }
+    proxyHost = settings.value("proxyhost").toString();
+    ui->lineEditProxyServer->setText(proxyHost);
+    proxyPort = settings.value("proxyport").toInt();
+    ui->lineEditProxyPort->setText(settings.value("proxyport").toString());
+    proxyLogin = settings.value("proxylogin").toString();
+    ui->lineEditProxyLogin->setText(proxyLogin);
+    proxyPassword = settings.value("proxypassword").toString();
+    ui->lineEditProxyPassword->setText(proxyPassword);
+    if (!ui->checkProxy->isChecked()) {
+        proxy.setType(QNetworkProxy::NoProxy);
+        QNetworkProxy::setApplicationProxy(proxy);
+    } else {
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(proxyHost);
+        proxy.setPort(proxyPort);
+        proxy.setUser(proxyLogin);
+        proxy.setPassword(proxyPassword);
+        QNetworkProxy::setApplicationProxy(proxy);
+    }
+
     qDebug() << city;
+    qDebug() << proxyHost;
+    qDebug() << proxyPort;
+    qDebug() << proxyLogin;
+    qDebug() << proxyPassword;
+    qDebug() << proxy;
+    qDebug() << proxy.user();
 }
 
 void MainWindow::on_clearCityButton_clicked()
