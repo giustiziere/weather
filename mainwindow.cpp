@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     trayIcon->setIcon(icon);
     setWindowIcon(icon);
 
+    manager = new QNetworkAccessManager(this);
+    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(weatherRequestFinished(QNetworkReply*)));
+
     createActions();
     openSavedSettings();
     getWeatherInfo();
@@ -29,12 +32,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateWeather()));
     timer->start(timeoutUpdate * 1000);
-
-
 }
 
 MainWindow::~MainWindow()
 {
+    delete trayMenu;
+    delete trayIcon;
+    delete settingsAction;
+    delete aboutAction;
+    delete exitAction;
+    delete manager;
     delete ui;
 }
 
@@ -90,22 +97,20 @@ void MainWindow::createActions()
 
 void MainWindow::getWeatherInfo()
 {
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QNetworkRequest requestWeather;
     requestWeather.setUrl(QUrl("http://free.worldweatheronline.com/feed/weather.ashx?q=" + city + "&format=xml&num_of_days=2&key=8ce57ec61d152703120709"));
     requestWeather.setRawHeader("Host", "free.worldweatheronline.com");
     requestWeather.setRawHeader("Keep-Alive", "115");
     requestWeather.setRawHeader("Connection", "keep-alive");
-    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(weatherRequestFinished(QNetworkReply*)));
     manager->get(requestWeather);
 }
 
 void MainWindow::weatherRequestFinished(QNetworkReply *reply)
 {
     QByteArray answer = reply->read(reply->bytesAvailable());
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    /*QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     xmlCode = codec->toUnicode(answer);
-    qWarning() << xmlCode;
+    qWarning() << xmlCode;*/
 
     QXmlQuery xmlQuery;
     QBuffer buffer(&answer);
@@ -120,6 +125,9 @@ void MainWindow::weatherRequestFinished(QNetworkReply *reply)
         QMessageBox::warning(0, "Ошибка!", "Невозможно получить данные о городе!\nПроверьте правильность ввода названия.\nErrorLog: " + errorCity);
         this->show();
         ui->lineEditCity->clear();
+        buffer.close();
+        reply->deleteLater();
+        answer.clear();
         return;
     }
 
@@ -156,6 +164,33 @@ void MainWindow::weatherRequestFinished(QNetworkReply *reply)
 
     buffer.close();
     reply->deleteLater();
+    answer.clear();
+}
+
+void MainWindow::weatherRequestFinishedTest(QNetworkReply *reply)
+{
+    QByteArray answer = reply->read(reply->bytesAvailable());
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    xmlCode = codec->toUnicode(answer);
+    qWarning() << xmlCode;
+
+    city = "test";
+
+    temperature = "test";
+
+    wind = "test";
+
+    windDirection = "test";
+
+    humidity = "test";
+
+    qDebug() << city;
+    qDebug() << temperature;
+    qDebug() << wind;
+    qDebug() << windDirection;
+    qDebug() << humidity;
+
+    reply->deleteLater();
 }
 
 void MainWindow::showPopupWeather()
@@ -177,16 +212,8 @@ void MainWindow::on_saveSettingsButton_clicked()
         QSettings settings(QCoreApplication::applicationDirPath() + "/config.ini", QSettings::IniFormat);
         settings.setValue("city", ui->lineEditCity->text());
         settings.setValue("timeout", ui->lineEditUpdatePeriod->text());
-        if (ui->checkShowPopupAtUpdate->isChecked()) {
-            settings.setValue("checkbaloon", "1");
-        } else {
-            settings.setValue("checkbaloon", "0");
-        }
-        if (ui->checkProxy->isChecked()) {
-            settings.setValue("checkproxy", "1");
-        } else {
-            settings.setValue("checkproxy", "0");
-        }
+        settings.setValue("checkbaloon", ui->checkShowPopupAtUpdate->isChecked() ? "1" : "0");
+        settings.setValue("checkproxy", ui->checkProxy->isChecked() ? "1" : "0");
         settings.setValue("proxyhost", ui->lineEditProxyServer->text());
         settings.setValue("proxyport", ui->lineEditProxyPort->text());
         settings.setValue("proxylogin", ui->lineEditProxyLogin->text());
@@ -253,4 +280,9 @@ void MainWindow::on_clearCityButton_clicked()
 void MainWindow::on_clearTimeoutButton_clicked()
 {
     ui->lineEditUpdatePeriod->clear();
+}
+
+void MainWindow::createTrayIcon()
+{
+
 }

@@ -37,6 +37,7 @@ public:
     QAction *exitAction;
 
     void getWeatherInfo();
+    QNetworkAccessManager *manager;
 
     QNetworkProxy proxy;
 
@@ -55,6 +56,9 @@ public:
 
     void showPopupWeather();
     void openSavedSettings();
+
+    void createTrayIcon();
+
     ~MainWindow();
 
 public slots:
@@ -64,6 +68,7 @@ public slots:
     void exitApp();
     void updateWeather();
     void weatherRequestFinished(QNetworkReply*);
+    void weatherRequestFinishedTest(QNetworkReply*);
 
 private slots:
     //void enableProxyAtCheck(int checkProxyBox);
